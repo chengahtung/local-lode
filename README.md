@@ -1,23 +1,22 @@
-# Project Setup
+# 🚀 **Project Setup**
 
-This project is developed on **Python 3.12** - download from Microsoft Store
+This project is developed on **🐍 Python 3.12** — download it from the **Microsoft Store**.
+It uses **Streamlit** and a few external libraries that must be installed before running.
 
-This project uses Python and requires installing some external libraries before running.
+After setup, you may launch the app using **`run_app.bat`** in the main program folder.
 
-This project is powered by Streamlit.
+---
 
-After setup, may use `run_app.bat` in main program folder.
-
-## 1. Create and activate a virtual environment (recommended)
+## 🧩 **1. Create and Activate a Virtual Environment (Recommended)**
 
 ```bash
-# Open command line in the folder
-Right-click any blank space in the main folder, then "Open in Terminal"
+# 💻 Open command line in the project folder
+Right-click any blank space → "Open in Terminal"
 
-# Create a virtual environment (Recommended) -- Skip all below if not needed
+# 🐍 Create a virtual environment (Recommended)
 python -m venv venv
 
-# Activate virtual environment
+# ⚡ Activate virtual environment
 # On Windows (PowerShell):
 .\venv\Scripts\activate
 
@@ -25,60 +24,89 @@ python -m venv venv
 source venv/bin/activate
 ```
 
-## 2. Install all required packages
+> 💡 *You may skip this step if you prefer using your global Python environment.*
 
-```
+---
+
+## 📦 **2. Install Required Packages**
+
+```bash
 pip install -r requirements.txt --verbose --progress-bar=on
 ```
 
-## 3. Create .env file (API_KEY)
+---
 
-```
-# Create .env file and fill up the content, may refer to .env_sample
+## 🔑 **3. Setup / Create `.env` File (API_KEY)**
+
+```bash
+# 🧾 Create a .env file in the main folder
+# Fill in your API key — you can refer to the sample provided in `.env_sample`
 ```
 
-## 4. Run the project
+---
 
-```
-# if virtual environment activated
+## ▶️ **4. Run the Project**
+
+Simply **double-click** `rag_app.bat` in the main folder.
+The Streamlit app should open automatically in your browser.
+
+> If not, check your terminal for a link (usually `http://localhost:8501`).
+
+---
+
+### 💡 **4.1 Alternative Run Method**
+
+```bash
+# If virtual environment activated
 streamlit run rag_main.py
-or
-# if no need virtual environment (run command from main folder)
+
+# OR if not using virtual environment
 python -m streamlit run rag_main.py
 ```
 
-The user interface should pop up as a browser. If not, use the link given in the cmd.
+---
 
-## 5. Upload knowledge in the 'kb' folder to consume
+## 📚 **5. Upload Knowledge Base (‘kb’ Folder)**
 
-```
-1. Place your notes/knowledge into 'kb' folder
-2. Click on 'Ingest KB' from the user interface (left panel)
-3. Wait for ingestion complete
-```
+1. 🗂️ Place your notes or documents into the **`kb/`** folder.
+2. ⚙️ From the Streamlit sidebar, click **“Ingest KB”**.
+3. ⏳ Wait until the ingestion process completes.
 
-`chroma_db` folder will be automatically created (stores embeddings of notes/knowledge)
+A **`chroma_db/`** folder will be automatically created — it stores embeddings of your notes.
 
-**Tips**: Inclued the document name inside the text of the document [improves search]
+> 💬 **Tip:** Include the document name inside your text to **improve search accuracy**.
 
-## 6. Query using natural language
+---
 
-===========================================================
+## 🔍 **6. Query Using Natural Language**
 
-#### Quick commands:
+Once your knowledge is ingested, simply type a natural-language question.
+The system retrieves, reranks, and optionally uses an **LLM** to generate answers.
 
-###### Quick run from cmd (cmd in folder)
+---
 
-```
+## ⚡ **Quick Commands**
+
+### ▶️ **Run from Command Line**
+
+```bash
 python -m streamlit run rag_main.py
 ```
 
-###### Activate virtual environment (If using virtual environment)
+### 🧠 **Activate Virtual Environment**
 
-```
+```bash
 # On Windows (PowerShell):
 .\venv\Scripts\activate
 
 # On Linux / macOS:
 source venv/bin/activate
 ```
+
+---
+
+### 🗑️ **Reset Tip**
+
+> To reset the database, delete all contents in the **`chroma_db/`** folder.
+
+---
