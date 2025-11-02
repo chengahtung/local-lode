@@ -599,7 +599,10 @@ def ingest_kb_to_collection(
             for idx, chunk in enumerate(chunks):
                 doc_id = _doc_id(str(fpath), idx)
                 meta = {
-                    "source_file": str(fpath.relative_to(kb_dir)).replace("\\", "/"),
+                    # "source_file": str(fpath.relative_to(kb_dir)).replace("\\", "/"),
+                    "source_file": str(Path(kb_dir.name) / fpath.relative_to(kb_dir)),
+                    "source_file_full": str(fpath),
+                    "folder": str(fpath.parents[0]),
                     "title": title,
                     "chunk_index": idx,
                     "type": file_type,
@@ -613,7 +616,10 @@ def ingest_kb_to_collection(
                     try:
                         json_obj = {
                             "id": doc_id,
-                            "source_file": str(fpath),
+                            # "source_file": str(fpath.relative_to(kb_dir)).replace("\\", "/"),
+                            "source_file": str(Path(kb_dir.name) / fpath.relative_to(kb_dir)),
+                            "folder": str(fpath.parents[0]),
+                            "source_file_full": str(fpath),
                             "title": title,
                             "chunk_index": idx,
                             "text": chunk,

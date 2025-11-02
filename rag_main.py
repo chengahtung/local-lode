@@ -6,6 +6,7 @@ import gc
 
 import streamlit as st
 import cleanup_and_trim
+import file_utils
 
 # import importlib # for hot reload (dev)
 # --- Logging setup ---
@@ -46,7 +47,8 @@ st.set_page_config(
 )
 
 # Get the folder where app.py is located
-app_path = Path(__file__).parent
+# app_path = Path(__file__).parent
+app_path = Path(__file__).resolve().parent
 
 if "reranker_keep_loaded" not in st.session_state:
     st.session_state.reranker_keep_loaded = True
@@ -95,7 +97,8 @@ if __name__ == "__main__":
                 logging.info(
                     f"Starting ingestion: kb_dir={kb_dir}, chunk_size={chunk_size}, overlap={overlap}, batch_size={batch_size}")
                 try:
-                    kb_path = Path(kb_dir)
+                    kb_path = app_path / kb_dir if kb_dir == "kb" else Path(kb_dir)
+                    logging.info(f"kb_path = {kb_path}")
                     kb_path.mkdir(exist_ok=True)
                     count = ru.ingest_kb_to_collection(
                         app_dir=app_path,
@@ -306,36 +309,56 @@ if __name__ == "__main__":
             
             st.markdown("## 📚 Sources")
 
-            # List out documents
-            for r in st.session_state.results:
+            # logging.info(st.session_state.results)
+
+
+        # List out documents
+        for i, r in enumerate(st.session_state.results):
+            col1, col2, col3, col4 = st.columns([6, 1, 2.7, 2.5])  # adjust ratios as needed
+            with col1:
                 st.markdown(f"**{r['rank']}. {r['title']}**")
-                sim = r.get('similarity')
-                # st.caption(f"Similarity: {sim:.4f}" if sim is not None else "Similarity: N/A")
-                # st.caption(f"Source: {r['source']}")
-                col1, col2 = st.columns([1, 2])
-                with col1:
-                    st.caption(f"Similarity: {sim:.4f}" if sim is not None else "Similarity: N/A")
-                with col2:
-                    st.caption(f"Source: {r['source']}")
+            with col3:
+                if st.form_submit_button("📂 Open folder", key=f"open_folder_{i}"):
+                    metadata = r.get("metadata", {})
+                    folder = metadata.get("folder")                             # example: C:\Users\xxxx\
+                    logging.info(f"📂 Opening folder... : folder={folder}")
+                    file_utils.open_folder(folder)
+            with col4:
+                if st.form_submit_button("📄Open file", key=f"open_file_{i}"):
+                    metadata = r.get("metadata", {})
+                    source_file_full = metadata.get("source_file_full")         # example: C:\Users\xxxx\document.txt
+                    logging.info(f"📄 Opening file... : source_file_full={source_file_full}")
+                    file_utils.open_file(source_file_full)
 
-                with st.expander("View snippet"):
-                    st.text(r['snippet'])
+            sim = r.get('similarity')
+            # form_key = f"chat_form_{i}"
+            # st.caption(f"Similarity: {sim:.4f}" if sim is not None else "Similarity: N/A")
+            # st.caption(f"Source: {r['source']}")
+            col1, col2 = st.columns([1, 2])
+            with col1:
+                st.caption(f"Similarity: {sim:.4f}" if sim is not None else "Similarity: N/A")
+            with col2:
+                st.caption(f"Source: {r['source']}")
 
-                with st.expander("Full document"):
-                    st.code(r['document'], language="text")
+            with st.expander("View snippet"):
+                st.text(r['snippet'])
 
-                with st.expander("Metadata"):
-                    st.json(r['metadata'])
+            with st.expander("Full document"):
+                st.code(r['document'], language="text")
 
-                st.markdown("---")
+            with st.expander("Metadata"):
+                st.json(r['metadata'])
 
-            with st.expander("See retrieved documents"):
-                st.write(st.session_state.results)
+            st.markdown("---")
 
-            with st.expander("See most relevant document ids"):
-                st.write("test")
-                st.write("relevant_text")
+        with st.expander("See retrieved documents"):
+            st.write(st.session_state.results)
 
-            # Clean up, free memory
-            cleanup_and_trim.best_effort_idle_release()
+        with st.expander("See most relevant document ids"):
+            st.write("test")
+            st.write("relevant_text")
+
+        # Clean up, free memory
+        cleanup_and_trim.best_effort_idle_release()
+
 
