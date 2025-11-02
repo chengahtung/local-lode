@@ -75,9 +75,7 @@ if __name__ == "__main__":
         #     gc.collect()
         #     st.success("✅ Reranker model unloaded from memory.")
 
-        st.markdown("---")
-        st.header("Database Controls")
-        if st.button("🗑️ Reset Database"):
+        if st.button("🗑️ Reset Database", help="Clear database contents"):
             st.session_state.confirm_reset = True
 
         if st.session_state.confirm_reset:
