@@ -374,21 +374,21 @@ if __name__ == "__main__":
             with col2:
                 st.caption(f"Source: {r['source']}")
 
-            with st.expander("View snippet"):
+            with st.expander("View snippet", expanded=False):
                 st.text(r['snippet'])
 
-            with st.expander("Full document"):
+            with st.expander("Full document", expanded=False):
                 st.code(r['document'], language="text")
 
-            with st.expander("Metadata"):
+            with st.expander("Metadata", expanded=False):
                 st.json(r['metadata'])
 
             st.markdown("---")
 
-        with st.expander("See retrieved documents"):
+        with st.expander("See retrieved documents", expanded=False):
             st.write(st.session_state.results)
 
-        with st.expander("See most relevant document ids"):
+        with st.expander("See most relevant document ids", expanded=False):
             st.write("test")
             st.write("relevant_text")
 
