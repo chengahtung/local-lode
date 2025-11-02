@@ -54,6 +54,8 @@ if "reranker_keep_loaded" not in st.session_state:
     st.session_state.reranker_keep_loaded = True
 if "ingest_docx" not in st.session_state:
     st.session_state.ingest_docx = False
+if "confirm_reset" not in st.session_state:
+    st.session_state.confirm_reset = False
 
 if __name__ == "__main__":
     # --- Keep the original sidebar (user asked not to change it) ---
@@ -72,6 +74,40 @@ if __name__ == "__main__":
                 torch.cuda.empty_cache()
             gc.collect()
             st.success("✅ Reranker model unloaded from memory.")
+
+        st.markdown("---")
+        st.header("Database Controls")
+        if st.button("🗑️ Reset Database"):
+            st.session_state.confirm_reset = True
+
+        if st.session_state.confirm_reset:
+            st.warning("⚠️ This will permanently delete all documents in your ChromaDB collection!")
+            if st.button("Confirm Reset"):
+                if not HAS_RAG_UTILS:
+                    st.error("rag_utils.py not found — cannot reset collection.")
+                    logging.error("Reset failed: rag_utils.py not found.")
+                else:
+                    try:
+                        col = ru.get_collection()
+                        # Fetch all documents' metadata to get their IDs
+                        all_docs = col.get(include=["metadatas", "documents"])
+                        all_ids = [meta.get("id") for meta in all_docs["metadatas"] if "id" in meta]
+
+                        if all_ids:
+                            col.delete(ids=all_ids)
+                            st.success(f"✅ ChromaDB collection cleared. {len(all_ids)} documents removed.")
+                            logging.info(f"ChromaDB collection cleared. {len(all_ids)} documents removed.")
+                        else:
+                            st.info("Collection is already empty.")
+
+                    except Exception as e:
+                        st.exception(e)
+                        logging.exception("Failed to reset ChromaDB collection.")
+                st.session_state.confirm_reset = False  # reset the confirmation state
+
+            if st.button("Cancel"):
+                st.session_state.confirm_reset = False  # reset the confirmation state
+                st.rerun()
 
         st.markdown("---")
         st.header("KB / Ingest")

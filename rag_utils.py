@@ -600,6 +600,7 @@ def ingest_kb_to_collection(
                 doc_id = _doc_id(str(fpath), idx)
                 meta = {
                     # "source_file": str(fpath.relative_to(kb_dir)).replace("\\", "/"),
+                    "id": doc_id,
                     "source_file": str(Path(kb_dir.name) / fpath.relative_to(kb_dir)),
                     "source_file_full": str(fpath),
                     "folder": str(fpath.parents[0]),
