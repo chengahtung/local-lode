@@ -47,12 +47,13 @@ pip install -r requirements.txt --verbose --progress-bar=on
 
 ## ▶️ **4. Run the Project**
 
-Simply **double-click** `rag_app.bat` in the main folder.
+
+Simply **double-click**
+# `rag_app.bat` in the main folder.
 The Streamlit app should open automatically in your browser.
 
 > If not, check your terminal for a link (usually `http://localhost:8501`).
 
----
 
 ### 💡 **4.1 Alternative Run Method**
 
