@@ -1,3 +1,31 @@
+# RAG Minimal 📝
+
+**Ever lost track of your own notes?**  
+You know you wrote something important… but where did you save it?  
+RAG Minimal is here to end that frustration and help you **know what you already know**.
+
+---
+
+## ❔ Why I Built This
+
+I often forget where I store notes across multiple folders and drives.  
+Hunting through them wastes time, causes duplicate notes, and interrupts my workflow.  
+
+RAG Minimal was created to solve this problem — a lightweight tool that lets you **locate your local notes instantly**.  
+It also helps you **rediscover information you’ve already captured**, so you can work smarter, not harder.
+
+---
+
+## What It Does
+
+- 🔍 Search any local note across multiple folders  
+- ⚡ Fast and lightweight, runs directly on your computer  
+- 🛠️ Minimal setup with no complicated dependencies  
+- 💡 Helps prevent duplicate work by showing you what you’ve already noted  
+- Keeps your workflow organized and efficient  
+
+---
+
 # 🚀 **Project Setup**
 
 This project is developed on **🐍 Python 3.12** — download it from the **Microsoft Store**.
