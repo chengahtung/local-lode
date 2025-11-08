@@ -49,7 +49,8 @@ pip install -r requirements.txt --verbose --progress-bar=on
 
 
 Simply **double-click**
-# `rag_app(browser).bat` in the main folder.
+# `rag_app(browser).bat` in the main folder.	-- Open in active browser tab
+# `rag_app(app).bat` in the main folder.		-- Open as separate Chrome app		
 The Streamlit app should open automatically in your browser.
 
 > If not, check your terminal for a link (usually `http://localhost:8501`).
