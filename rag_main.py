@@ -3,6 +3,9 @@ import time
 from pathlib import Path
 from typing import List, Dict, Any
 import gc
+import json
+import tkinter as tk
+from tkinter import filedialog
 
 import streamlit as st
 # -- Page config --
@@ -46,6 +49,24 @@ except Exception:
 # Get the folder where app.py is located
 # app_path = Path(__file__).parent
 app_path = Path(__file__).resolve().parent
+
+# --- config helpers -------------------------------------------------------
+CONFIG_FILE = app_path / "rag_config.json"
+
+def load_config():
+    if CONFIG_FILE.exists():
+        try:
+            return json.loads(CONFIG_FILE.read_text(encoding="utf-8"))
+        except:
+            return {}
+    return {}
+
+def save_config(cfg):
+    CONFIG_FILE.write_text(json.dumps(cfg, indent=2), encoding="utf-8")
+
+# --- load config -------------------------
+cfg = load_config()
+default_kb = cfg.get("kb_folder", "kb")
 
 if "reranker_keep_loaded" not in st.session_state:
     st.session_state.reranker_keep_loaded = True
@@ -93,7 +114,33 @@ if __name__ == "__main__":
 
         st.markdown("---")
         st.header("KB / Ingest")
-        kb_dir = st.text_input("KB folder (relative)", value="kb", help="Knowledge Base to ingest, defaulted to kb folder in main folder")
+        kb_dir = st.text_input("KB folder (relative)", value=default_kb, help="Knowledge Base to ingest, defaulted to kb folder in main folder")
+        # --- folder picker button ---
+        if st.button("📁 Choose Folder"):
+            # create a hidden Tkinter root
+            root = tk.Tk()
+            root.withdraw()
+            root.attributes('-topmost', True)
+            folder = filedialog.askdirectory()  # native folder dialog
+            root.destroy()
+
+            if folder:
+                kb_dir = folder
+                cfg["kb_folder"] = folder
+                save_config(cfg)
+                st.success(f"✅ Default folder saved: {folder}")
+                logging.info(f"✅ Default folder saved: {folder}")
+                st.rerun()
+
+
+        # existing Set default (optional)
+        if st.button("↶ Reset Default KB Folder"):
+            cfg["kb_folder"] = cfg["original_kb_folder"]
+            save_config(cfg)
+            st.success(f"✅ Default KB Folder RESET: {kb_dir}")
+            logging.info(f"✅ Default KB Folder RESET: {kb_dir}")
+            st.rerun()
+
         chunk_size = st.number_input("Chunk size (chars)", value=100000, step=1000)
         overlap = st.number_input("Overlap (chars)", value=200, step=50)
         batch_size = st.number_input("Batch size (upsert)", value=64, step=1)
