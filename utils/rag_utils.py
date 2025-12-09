@@ -185,8 +185,43 @@ def maybe_answer_with_llm(question: str, top_records: List[Dict[str, Any]]):
 # Cross encoder cache
 _CE_CACHE: Dict[str, CrossEncoder] = {}
 def _get_cross_encoder(model_name: str = "cross-encoder/ms-marco-MiniLM-L-6-v2") -> CrossEncoder:
-    if model_name not in _CE_CACHE:
-        _CE_CACHE[model_name] = CrossEncoder(model_name)
+# Initial implementation ~START~
+    # if model_name not in _CE_CACHE:
+    #     _CE_CACHE[model_name] = CrossEncoder(model_name)
+    # return _CE_CACHE[model_name]
+# Initial implementation ~END~
+
+    import torch
+    from sentence_transformers import CrossEncoder
+
+    # Decide device
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    print(f"torch.cuda.is_available(): {torch.cuda.is_available()}")
+    print(f"torch.__version__: {torch.__version__}")
+    print(f"torch.version.cuda: {torch.version.cuda}")
+    print(f"torch.cuda.is_available(): {torch.cuda.is_available()}")
+
+    # [DEBUG] force device
+    # device = "cuda"
+    # device = "cpu"
+
+    # If already cached, ensure it is *on the correct device*
+    if model_name in _CE_CACHE:
+        ce = _CE_CACHE[model_name]
+
+        # If the model is already on GPU/CPU correctly, return it
+        current_device = ce.model.device if hasattr(ce, "model") else None
+        if current_device and device in str(current_device):
+            return ce
+
+        # If device differs, reload on correct device
+        logging.info(f"Reloading cross-encoder '{model_name}' on device={device}")
+        _CE_CACHE[model_name] = CrossEncoder(model_name, device=device)
+        return _CE_CACHE[model_name]
+
+    # Not cached → load and cache
+    logging.info(f"Loading cross-encoder '{model_name}' on device={device}")
+    _CE_CACHE[model_name] = CrossEncoder(model_name, device=device)
     return _CE_CACHE[model_name]
 
 # Unload cross encoder. (Release Memory)
@@ -360,8 +395,14 @@ def rerank_with_cross_encoder_v2(
         logging.debug("No pairs were created for reranking")
         return []
 
+    print()
+    logging.info(f"Start [CE] Total reranking timer.")
+    t0 = time.time()
     # run prediction in batches — predict_fn should accept list of (query, passage) pairs
     ce_scores = predict_fn(pairs, batch_size)
+    duration = time.time() - t0
+    logging.info(f"[CE] Total reranking time for {len(pairs)} pairs: {duration:.3f}s")
+    print()
 
     # ensure numpy array
     ce_scores = np.asarray(ce_scores, dtype=float)
