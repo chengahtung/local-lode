@@ -2,6 +2,40 @@ import os
 import platform
 import subprocess
 import logging
+import tkinter as tk
+from tkinter import filedialog
+import threading
+
+def select_folder_dialog() -> str | None:
+    """
+    Open a folder selection dialog and return the selected path.
+    """
+    result = [None]
+    
+    def _open_dialog():
+        try:
+            root = tk.Tk()
+            root.withdraw()
+            root.attributes('-topmost', True)
+            folder_path = filedialog.askdirectory(title="Select Knowledge Base Folder")
+            if folder_path:
+                result[0] = folder_path
+            root.destroy()
+        except Exception as e:
+            logging.error(f"Error opening dialog: {e}")
+
+    # For local desktop use, running in main thread usually works fine
+    _open_dialog()
+    return result[0]
+
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
+
+_executor = ThreadPoolExecutor(max_workers=1)
+
+async def run_in_thread(func, *args):
+    loop = asyncio.get_event_loop()
+    return await loop.run_in_executor(_executor, func, *args)
 
 def open_file(file_path: str):
     """Open any file with the default application."""
