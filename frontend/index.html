@@ -25,10 +25,14 @@
 
                     <div class="form-group">
                         <label for="kb-folder">KB Folder</label>
-                        <div class="input-group">
-                            <input type="text" id="kb-folder" value="kb" placeholder="kb">
-                            <button id="browse-btn" class="btn btn-secondary btn-sm" title="Select Folder">📂</button>
-                            <button id="reset-kb-btn" class="btn btn-secondary btn-sm" title="Reset Default">↺</button>
+                        <input type="text" id="kb-folder" value="kb" placeholder="kb">
+                        <div class="kb-folder-actions">
+                            <button id="browse-btn" class="btn btn-secondary btn-sm">
+                                <span class="btn-icon">📂</span> Select Folder
+                            </button>
+                            <button id="reset-kb-btn" class="btn btn-secondary btn-sm">
+                                <span class="btn-icon">↶</span> Reset Default KB Folder
+                            </button>
                         </div>
                     </div>
 

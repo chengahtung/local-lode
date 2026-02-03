@@ -212,19 +212,22 @@ body {
     box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
-.input-group {
+.kb-folder-actions {
+    /* display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm); */
     display: flex;
-    gap: var(--spacing-xs);
+    flex-direction: column;
+    /* stack vertically */
+    gap: 6px;
+    /* space between buttons */
+    margin-top: 6px;
 }
 
-.input-group input {
+.kb-folder-actions .btn {
     flex: 1;
-}
-
-.input-group .btn {
-    width: auto;
-    padding: 0 var(--spacing-sm);
-    font-size: 1.2rem;
+    font-size: 0.75rem;
+    padding: 6px 4px;
 }
 
 .checkbox-group {
