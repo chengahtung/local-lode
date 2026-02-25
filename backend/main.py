@@ -48,6 +48,15 @@ if frontend_path.exists():
     logger.info(f"Mounted static files from {frontend_path}")
 
 
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    """Serve the favicon"""
+    favicon_path = frontend_path / "favicon.png"
+    if favicon_path.exists():
+        return FileResponse(str(favicon_path))
+    return None
+
+
 @app.get("/")
 async def root():
     """Serve the frontend index.html"""
