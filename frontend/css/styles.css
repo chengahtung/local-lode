@@ -146,6 +146,16 @@ body {
     font-weight: 700;
     color: white;
     margin-bottom: var(--spacing-xs);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-logo {
+    height: 1.5em;
+    /* Slightly larger than previous 1.25em to give it more presence */
+    width: auto;
+    vertical-align: middle;
 }
 
 .subtitle {
