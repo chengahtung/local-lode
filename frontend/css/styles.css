@@ -153,7 +153,6 @@ body {
 
 .header-logo {
     height: 1.5em;
-    /* Slightly larger than previous 1.25em to give it more presence */
     width: auto;
     vertical-align: middle;
 }
@@ -439,50 +438,151 @@ body {
     color: var(--text-primary);
 }
 
+/* --- GitHub-style markdown content --- */
 .llm-content {
     color: var(--text-secondary);
     line-height: 1.7;
     white-space: normal;
+    font-size: 0.95rem;
+}
+
+/* Headings */
+.llm-content h1,
+.llm-content h2,
+.llm-content h3,
+.llm-content h4,
+.llm-content h5,
+.llm-content h6 {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    padding-bottom: 0.2em;
+}
+
+.llm-content h1 {
+    font-size: 1.6rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.llm-content h2 {
+    font-size: 1.35rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .llm-content h3 {
     font-size: 1.125rem;
-    font-weight: 700;
-    margin-top: var(--spacing-md);
-    margin-bottom: var(--spacing-sm);
-    color: var(--text-primary);
 }
 
+.llm-content h4 {
+    font-size: 1rem;
+}
+
+/* Paragraphs */
 .llm-content p {
     margin-bottom: var(--spacing-sm);
 }
 
+/* Lists */
 .llm-content ul,
 .llm-content ol {
     margin-bottom: var(--spacing-sm);
-    padding-left: var(--spacing-lg);
+    padding-left: 1.5em;
 }
 
 .llm-content li {
     margin-bottom: var(--spacing-xs);
 }
 
+/* Bold / italic */
 .llm-content strong {
     color: var(--text-primary);
     font-weight: 700;
 }
 
+.llm-content em {
+    font-style: italic;
+}
+
+/* Inline code */
+.llm-content code {
+    background: var(--bg-tertiary);
+    color: #119200;
+    padding: 0.15em 0.45em;
+    border-radius: 4px;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 0.88em;
+    border: 1px solid var(--border-color);
+}
+
+/* Fenced code blocks */
+.llm-content pre {
+    background: #0d1117;
+    /* GitHub dark code background */
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 1em;
+    overflow-x: auto;
+    margin-bottom: var(--spacing-md);
+    line-height: 1.5;
+}
+
+.llm-content pre code {
+    background: transparent;
+    color: #e6edf3;
+    /* GitHub code text color */
+    padding: 0;
+    border: none;
+    font-size: 0.875rem;
+    border-radius: 0;
+}
+
+/* Blockquotes */
+.llm-content blockquote {
+    border-left: 4px solid var(--primary-color);
+    margin: var(--spacing-md) 0;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: rgba(99, 102, 241, 0.05);
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.llm-content blockquote p {
+    margin: 0;
+}
+
+/* Horizontal rule */
+.llm-content hr {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: var(--spacing-lg) 0;
+}
+
+/* Links */
+.llm-content a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.llm-content a:hover {
+    text-decoration: underline;
+}
+
+/* Tables */
 .llm-content table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: var(--spacing-md);
     border: 1px solid var(--border-color);
+    display: block;
+    overflow-x: auto;
 }
 
 .llm-content th,
 .llm-content td {
     border: 1px solid var(--border-color);
-    padding: var(--spacing-sm);
+    padding: 6px 13px;
     text-align: left;
 }
 
@@ -490,6 +590,10 @@ body {
     background-color: var(--bg-tertiary);
     font-weight: 600;
     color: var(--text-primary);
+}
+
+.llm-content tr:nth-child(even) {
+    background-color: var(--bg-tertiary);
 }
 
 .llm-content tr:hover {
