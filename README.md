@@ -57,10 +57,10 @@ This project uses **🐍 Python 3.12.10**.
 - Recommended: Install Python from [python.org](https://www.python.org/downloads/).  
 - Alternative: Microsoft Store version (⚠️ may cause PATH issues on some systems).
 
-It uses **Streamlit** and a few external libraries that must be installed before running.
-> When launched, Local Lode opens a clean Streamlit dashboard where you can search your notes, ingest new files, and view retrieved content instantly.
+It uses **FastAPI** for the backend and a modern **Vanilla JavaScript** frontend.
+> When launched, Local Lode starts a local server and opens a clean, responsive dashboard where you can search your notes, ingest new files, and view retrieved content instantly.
 
-After setup, you may launch the app using **`local-lode(browser).bat`** or **`local-lode(app).bat`** in the main program folder. -- Browser used: Chrome
+You can launch the app using **`local-lode.bat`** in the main program folder for a one-click experience.
 
 ---
 
@@ -112,25 +112,29 @@ Fill in your API key — you can refer to the sample provided in `.env_sample`
 
 ## ▶️ **4. Run the Project**
 
-Simply **double-click** the appropriate file in the main folder to launch the app:
+Simply **double-click** the unified launcher in the main folder:
 
-- **➡️ `local-lode(browser).bat`** — Open in active browser tab  
-- **➡️ `local-lode(app).bat`** — Open as separate Chrome app
+- **➡️ `local-lode.bat`** — Automatically starts the backend and opens the app in your browser.
 
-	
-The Streamlit app should open automatically in your browser.
+### 💡 **4.1 Terminal Run Method**
 
-> If not, check your terminal for a link (usually `http://localhost:8501`).
-
-
-### 💡 **4.1 Alternative Run Method**
+If you prefer using the terminal, run the following command from the project root:
 
 ```bash
-# If virtual environment activated
-streamlit run rag_main.py
+# Start the unified launcher
+python launcher_new.py
+```
 
-# OR if not using virtual environment
-python -m streamlit run rag_main.py
+### �️ **4.2 Legacy Version (Streamlit)**
+
+The older Streamlit-based version is still available but no longer the primary focus:
+
+- **➡️ `local-lode(browser).bat`** — Open Streamlit version in active browser tab  
+- **➡️ `local-lode(app).bat`** — Open Streamlit version as separate Chrome app
+
+```bash
+# To run Streamlit manually:
+streamlit run rag_main.py
 ```
 
 ---
@@ -138,8 +142,8 @@ python -m streamlit run rag_main.py
 ## 📚 **5. Upload Knowledge Base (‘kb’ Folder)**
 
 1. 🗂️ Place your notes or documents into the **`kb/`** folder.
-2. ⚙️ From the Streamlit sidebar, click **“Ingest KB”**.
-3. ⏳ Wait until the ingestion process completes.
+2. ⚙️ From the application sidebar, click **“Ingest KB”**.
+3. ⏳ Wait until the ingestion process completes (indicated by a success message).
 
 A **`chroma_db/`** folder will be automatically created — it stores embeddings of your notes.
 
@@ -159,6 +163,10 @@ The system retrieves, reranks, and optionally uses an **LLM** to generate answer
 ### ▶️ **Run from Command Line**
 
 ```bash
+# Run the new unified launcher (Primary)
+python launcher_new.py
+
+# Run the legacy Streamlit version
 python -m streamlit run rag_main.py
 ```
 
