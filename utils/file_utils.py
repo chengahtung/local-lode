@@ -14,6 +14,15 @@ def select_folder_dialog() -> str | None:
     
     def _open_dialog():
         try:
+            # Enable High DPI awareness on Windows to prevent low-resolution/blurry dialogs
+            if platform.system() == "Windows":
+                import ctypes
+                try:
+                    # 1 = PROCESS_SYSTEM_DPI_AWARE
+                    ctypes.windll.shcore.SetProcessDpiAwareness(1)
+                except Exception:
+                    pass
+
             root = tk.Tk()
             root.withdraw()
             root.attributes('-topmost', True)
